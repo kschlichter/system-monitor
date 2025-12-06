@@ -1,0 +1,76 @@
+type: vertical-stack
+cards:
+  - show_name: true
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: sensor.schlerver_status
+        name: Summary
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/schlerver
+      - entity: sensor.schlerver_raid_resync_progress
+        name: Resync
+      - entity: sensor.schlerver_boot_timestamp
+        name: Booted
+        format: date
+      - entity: sensor.schlerver_sync_timestamp
+        name: Sync'd
+        format: relative
+    title: Schlerver
+  - show_name: true
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: sensor.workschlichter_status
+        name: Summary
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/work-desktop
+      - entity: sensor.workschlichter_boot_timestamp
+        name: Booted
+        format: date
+      - entity: sensor.workschlichter_sync_timestamp
+        name: Sync'd
+    title: Work Desktop
+    state_color: true
+  - show_name: true
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: sensor.kold_storage_status
+        name: Summary
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/kold-storage
+      - entity: sensor.kold_storage_raid_resync_progress
+        name: Resync
+      - entity: sensor.kold_storage_boot_timestamp
+        name: Booted
+        format: date
+      - entity: sensor.kold_storage_sync_timestamp
+        name: Sync'd
+        format: relative
+    title: Kold Storage
+  - show_name: true
+    show_icon: true
+    show_state: true
+    type: glance
+    entities:
+      - entity: sensor.klaptop_status
+        name: Summary
+        tap_action:
+          action: navigate
+          navigation_path: /lovelace/laptop
+      - entity: sensor.klaptop_battery_status
+        name: Battery
+      - entity: sensor.klaptop_boot_timestamp
+        name: Booted
+        format: date
+      - entity: sensor.klaptop_sync_timestamp
+        name: Sync'd
+        format: relative
+    title: Laptop
