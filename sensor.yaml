@@ -1,0 +1,275 @@
+- sensor:
+#####################
+# Schlerver
+#####################
+  - name: "Schlerver Status"
+    default_entity_id: sensor.schlerver_status
+    state: >
+      {% if is_state('sensor.schlerver_drive_status','Healthy') and
+            is_state('sensor.schlerver_capacity_status','Healthy') and 
+            is_state('sensor.schlerver_utilization_status','Healthy') and 
+            is_state('sensor.schlerver_sync_status','Healthy') and
+            is_state('sensor.schlerver_battery_status','Healthy') %}
+        {% if is_state('sensor.schlerver_raid_status','Rebuilding') %}
+          Rebuilding
+        {% elif is_state('sensor.schlerver_raid_status','Healthy') %}
+          Healthy
+        {% else %}
+          Unhealthy
+        {% endif %}
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_status','Healthy') %}
+        far:thumbs-up
+      {% elif is_state('sensor.schlerver_status','Rebuilding') %}
+        mdi:account-hard-hat-outline
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver Utilization Status"
+    default_entity_id: sensor.schlerver_utilization_status
+    state: >
+      {% if int(states('sensor.schlerver_cpu_load_avg_15min'),default=0) < 80 %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_utilization_status','Healthy') %}
+        far:thumbs-up
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver Battery Status"
+    default_entity_id: sensor.schlerver_battery_status
+    state: >
+      {% if (int(states('sensor.apc_be650g1_battery_charge'),0) == 100) and
+            (int(states('sensor.apc_be650g1_input_voltage'),0) > 118) %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_battery_status','Healthy') %}
+        mdi:power-plug-battery
+      {% else %}
+        mdi:battery-alert
+      {% endif %}
+
+  - name: "Schlerver Drive Status"
+    default_entity_id: sensor.schlerver_drive_status
+    state: >
+      {% if is_state('sensor.schlerver_nvme0_health','Healthy') and
+            is_state('sensor.schlerver_sda_health','Healthy') and
+            is_state('sensor.schlerver_sdb_health','Healthy') and
+            is_state('sensor.schlerver_sdc_health','Healthy') and
+            is_state('sensor.schlerver_sdd_health','Healthy') and
+            is_state('sensor.schlerver_sde_health','Healthy') %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_drive_status','Healthy') %}
+        far:thumbs-up
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+            
+  - name: "Schlerver Capacity Status"
+    default_entity_id: sensor.schlerver_capacity_status
+    state: >
+      {% if int(states('sensor.schlerver_efi_pct_used'),default=0) > 80 or
+            int(states('sensor.schlerver_root_pct_used'),default=0) > 80 or
+            int(states('sensor.schlerver_swap_pct_used'),default=0) > 80 or
+            int(states('sensor.schlerver_storage_pct_used'),default=0) > 70 %}
+        Unhealthy
+      {% else %}
+        Healthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_capacity_status','Healthy') %}
+        far:thumbs-up
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver Sync Status"
+    default_entity_id: sensor.schlerver_sync_status
+    state: >
+      {% if (as_timestamp(now())) - as_timestamp(states('sensor.schlerver_sync_timestamp'),default=0) < 960 %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sync_status','Healthy') %}
+        far:thumbs-up
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver RAID Status"
+    default_entity_id: sensor.schlerver_raid_status
+    state: "{{ states('input_select.schlerver_raid_status') }}"
+    icon: >
+      {% if is_state('sensor.schlerver_raid_status','Healthy') %}
+        far:thumbs-up
+      {% elif is_state('sensor.schlerver_raid_status','Rebuilding') %}
+        mdi:account-hard-hat-outline
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver nvme0 Health"
+    default_entity_id: sensor.schlerver_nvme0_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_nvme0_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_nvme0_temperature'),default=0) < 70 and
+            float(states('sensor.schlerver_root_pct_used'),default=0) < 80 %}
+        Healthy
+      {% else  %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_nvme0_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver sda Health"
+    default_entity_id: sensor.schlerver_sda_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_sda_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_sda_temperature'),default=0) < 70 %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sda_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver sdb Health"
+    default_entity_id: sensor.schlerver_sdb_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_sdb_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_sdb_temperature'),default=0) < 70 and
+            is_state('sensor.schlerver_raid_sdb_fault','False') %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sdb_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver sdc Health"
+    default_entity_id: sensor.schlerver_sdc_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_sdc_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_sdc_temperature'),default=0) < 70 and
+            is_state('sensor.schlerver_raid_sdc_fault','False') %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sdc_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver sdd Health"
+    default_entity_id: sensor.schlerver_sdd_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_sdd_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_sdd_temperature'),default=0) < 70 and
+            is_state('sensor.schlerver_raid_sdd_fault','False') %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sdd_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver sde Health"
+    default_entity_id: sensor.schlerver_sde_health
+    state: >
+      {% if is_state('sensor.schlerver_smart_sde_assessment','PASS') and 
+            int(states('sensor.schlerver_smart_sde_temperature'),default=0) < 70 and
+            is_state('sensor.schlerver_raid_sde_fault','False') %}
+        Healthy
+      {% else %}
+        Unhealthy
+      {% endif %}
+    icon: >
+      {% if is_state('sensor.schlerver_sde_health','Healthy') %}
+        mdi:harddisk
+      {% else %}
+        mdi:fire-alert
+      {% endif %}
+
+  - name: "Schlerver EFI Used PCT"
+    default_entity_id: sensor.schlerver_efi_used_pct
+    unit_of_measurement: '%'
+    state_class: measurement
+    state: "{{ states('sensor.schlerver_efi_pct_used') | float(default=0) }}"
+    icon: mdi:file-percent-outline
+
+  - name: "Schlerver Root Used PCT"
+    default_entity_id: sensor.schlerver_root_used_pct
+    unit_of_measurement: '%'
+    state_class: measurement
+    state: "{{ float(states('sensor.schlerver_root_pct_used'),default=0) }}"
+    icon: mdi:file-percent-outline
+
+  - name: "Schlerver Storage Used PCT"
+    default_entity_id: sensor.schlerver_storage_used_pct
+    unit_of_measurement: '%'
+    state_class: measurement
+    state: "{{ float(states('sensor.schlerver_storage_pct_used'),default=0) }}"
+    icon: mdi:file-percent-outline
+
+  - name: "Schlerver Swap Used PCT"
+    default_entity_id: sensor.schlerver_swap_used_pct
+    unit_of_measurement: '%'
+    state_class: measurement
+    state: "{{ float(states('sensor.schlerver_swap_pct_used'),default=0) }}"
+    icon: mdi:file-percent-outline
+
+  - name: "Schlerver NVR Used PCT"
+    default_entity_id: sensor.schlerver_nvr_used_pct
+    unit_of_measurement: '%'
+    state_class: measurement
+    state: "{{ float(states('sensor.schlerver_nvr_pct_used'),default=0) }}"
+    icon: mdi:file-percent-outline
+
+    ### for displaying relative times ###
+  - name: "Schlerver Sync Timestamp"
+    device_class: timestamp
+    default_entity_id: sensor.schlerver_sync_timestamp
+    state: "{{ (as_timestamp(states('sensor.schlerver_sync_time'),default=0) | int) | timestamp_custom('%Y-%m-%d %H:%M:%S%z') }}"
+    icon: "mdi:calendar-clock"      
+
+  - name: "Schlerver Boot Timestamp"
+    device_class: timestamp
+    default_entity_id: sensor.schlerver_boot_timestamp
+    state: "{{ (as_timestamp(states('sensor.schlerver_boot_time'),default=0) | int) | timestamp_custom('%Y-%m-%d %H:%M:%S%z') }}"
+    icon: "mdi:calendar-clock"
