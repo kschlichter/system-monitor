@@ -1,0 +1,378 @@
+#####################
+# Schlerver
+#####################
+- resource: "http://10.2.0.10:8123/local/hass_monitor/schlerver/hass_monitor_schlerver.json"
+  sensor:
+
+
+#####################
+# CPU Stuffs
+#####################
+    - name: Schlerver CPU Temp
+      value_template: "{{ float(value_json.cpus.temp,default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: °C
+      icon: mdi:thermometer
+
+    - name: Schlerver CPU Temp High
+      value_template: "{{ float(value_json.cpus.high,default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver CPU Temp Critical
+      value_template: "{{ float(value_json.cpus.critical,default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver CPU Load Avg 15min
+      value_template: "{{ float(value_json.cpus.load_average_15min,default=0) | round(2) }}"
+
+
+#####################
+# Memory
+#####################
+    - name: Schlerver Memory total
+      value_template: "{{ float(value_json.memory.total,default=0) }}"
+
+    - name: Schlerver Memory PCT Used
+      value_template: "{{ float(value_json.memory.pct_used,default=0) }}"
+
+
+#####################
+# Swap
+#####################
+    - name: Schlerver Swap total
+      value_template: "{{ float(value_json.swap.total,default=0) }}"
+
+    - name: Schlerver Swap Used
+      value_template: "{{ float(value_json.swap.used,default=0) }}"
+
+    - name: Schlerver Swap PCT Used
+      value_template: "{{ float(value_json.swap.pct_used,default=0) }}"
+
+
+#####################
+# GPUs
+#####################
+    - name: Schlerver GPU 0 UUID
+      value_template: "{{ value_json['gpus']['0']['uuid'] }}"
+      icon: si:nvidia
+
+    - name: Schlerver GPU 0 Name
+      value_template: "{{ value_json['gpus']['0']['name'] }}"
+      icon: si:nvidia
+
+    - name: Schlerver GPU 0 Utilization
+      value_template: "{{ int(value_json['gpus']['0']['utilization'],default=0) }}"
+      icon: si:nvidia
+
+    - name: Schlerver GPU 0 Memory total
+      value_template: "{{ float(value_json['gpus']['0']['memory_total'],default=0) }}"
+      icon: si:nvidia
+
+    - name: Schlerver GPU 0 PCT Used
+      value_template: "{{ float(value_json['gpus']['0']['pct_used'],default=0) }}"
+      icon: si:nvidia
+
+    - name: Schlerver GPU 0 Temperature
+      value_template: "{{ float(value_json['gpus']['0']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+
+#####################
+# NICs
+#####################
+    - name: Schlerver NIC enp5s0
+      value_template: "{{ value_json.nics.enp5s0 }}"
+      icon: mdi:lan
+
+    - name: Schlerver NIC external
+      value_template: "{{ value_json.nics.external }}"
+      icon: mdi:lan
+
+
+#####################
+# Drives
+#####################
+#####################
+# SMART
+#####################
+### sda ###
+    - name: Schlerver SMART sda Model
+      value_template: "{{ value_json['drives']['/dev/sda']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sda Serial
+      value_template: "{{ value_json['drives']['/dev/sda']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sda Assignment
+      value_template: "{{ value_json['drives']['/dev/sda']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sda Assessment
+      value_template: "{{ value_json['drives']['/dev/sda']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sda Temperature
+      value_template: "{{ float(value_json['drives']['/dev/sda']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+
+### sdb ###
+    - name: Schlerver SMART sdb Model
+      value_template: "{{ value_json['drives']['/dev/sdb']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdb Serial
+      value_template: "{{ value_json['drives']['/dev/sdb']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdb Assignment
+      value_template: "{{ value_json['drives']['/dev/sdb']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdb Assessment
+      value_template: "{{ value_json['drives']['/dev/sdb']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdb Temperature
+      value_template: "{{ float(value_json['drives']['/dev/sdb']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver RAID sdb Fault
+      value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdb1']['faulty'] }}"
+      icon: mdi:harddisk
+
+
+### sdc ###
+    - name: Schlerver SMART sdc Model
+      value_template: "{{ value_json['drives']['/dev/sdc']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdc Serial
+      value_template: "{{ value_json['drives']['/dev/sdc']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdc Assignment
+      value_template: "{{ value_json['drives']['/dev/sdc']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdc Assessment
+      value_template: "{{ value_json['drives']['/dev/sdc']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdc Temperature
+      value_template: "{{ float(value_json['drives']['/dev/sdc']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver RAID sdc Fault
+      value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdc1']['faulty'] }}"
+      icon: mdi:harddisk
+
+
+### sdd ###
+    - name: Schlerver SMART sdd Model
+      value_template: "{{ value_json['drives']['/dev/sdd']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdd Serial
+      value_template: "{{ value_json['drives']['/dev/sdd']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdd Assignment
+      value_template: "{{ value_json['drives']['/dev/sdd']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdd Assessment
+      value_template: "{{ value_json['drives']['/dev/sdd']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sdd Temperature
+      value_template: "{{ float(value_json['drives']['/dev/sdd']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver RAID sdd Fault
+      value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdd1']['faulty'] }}"
+      icon: mdi:harddisk
+
+
+### sde ###
+    - name: Schlerver SMART sde Model
+      value_template: "{{ value_json['drives']['/dev/sde']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sde Serial
+      value_template: "{{ value_json['drives']['/dev/sde']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sde Assignment
+      value_template: "{{ value_json['drives']['/dev/sde']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sde Assessment
+      value_template: "{{ value_json['drives']['/dev/sde']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART sde Temperature
+      value_template: "{{ float(value_json['drives']['/dev/sde']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+    - name: Schlerver RAID sde Fault
+      value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sde1']['faulty'] }}"
+      icon: mdi:harddisk
+
+
+### nvme0 ###
+    - name: Schlerver SMART nvme0 Model
+      value_template: "{{ value_json['drives']['/dev/nvme0']['model'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART nvme0 Serial
+      value_template: "{{ value_json['drives']['/dev/nvme0']['serial_number'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART nvme0 Assignment
+      value_template: "{{ value_json['drives']['/dev/nvme0']['assignment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART nvme0 Assessment
+      value_template: "{{ value_json['drives']['/dev/nvme0']['assessment'] }}"
+      icon: mdi:harddisk
+
+    - name: Schlerver SMART nvme0 Temperature
+      value_template: "{{ float(value_json['drives']['/dev/nvme0']['temperature'],default=0) }}"
+      #device_class: temperature ### Converts to F!
+      unit_of_measurement: '°C'
+      icon: mdi:thermometer
+
+
+#####################
+# Partitions
+#####################
+    - name: Schlerver Root total
+      value_template: "{{ float(value_json['drives']['/']['total'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver Root Used
+      value_template: "{{ float(value_json['drives']['/']['used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver Root PCT Used
+      value_template: "{{ float(value_json['drives']['/']['pct_used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver EFI total
+      value_template: "{{ float(value_json['drives']['/boot/efi']['total'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver EFI Used
+      value_template: "{{ float(value_json['drives']['/boot/efi']['used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver EFI PCT Used
+      value_template: "{{ float(value_json['drives']['/boot/efi']['pct_used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver Storage total
+      value_template: "{{ float(value_json['drives']['/mnt/storage']['total'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver Storage Used
+      value_template: "{{ float(value_json['drives']['/mnt/storage']['used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver Storage PCT Used
+      value_template: "{{ float(value_json['drives']['/mnt/storage']['pct_used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver NVR total
+      value_template: "{{ float(value_json['drives']['/mnt/nvr']['total'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver NVR Used
+      value_template: "{{ float(value_json['drives']['/mnt/nvr']['used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+    - name: Schlerver NVR PCT Used
+      value_template: "{{ float(value_json['drives']['/mnt/nvr']['pct_used'],default=0) }}"
+      icon: mdi:folder-arrow-up-down
+
+
+#####################
+# RAID
+#####################
+    - name: Schlerver RAID Active
+      value_template: "{{ value_json.drives.mdstat.devices.md127.active }}"
+
+    - name: Schlerver RAID Personality
+      value_template: "{{ value_json.drives.mdstat.devices.md127.personality }}"
+
+    - name: Schlerver RAID Disk Count
+      value_template: "{{ float(value_json.drives.mdstat.devices.md127.status.raid_disks,default=0) }}"
+
+    - name: Schlerver RAID Non-Degraded Disks
+      value_template: "{{ float(value_json.drives.mdstat.devices.md127.status.non_degraded_disks,default=0) }}"
+
+    - name: Schlerver RAID Resync
+      value_template: "{{ value_json.drives.mdstat.devices.md127.resync }}"
+
+    - name: Schlerver RAID Resync Progress
+      value_template: > 
+        {% if states('sensor.schlerver_raid_resync') != 'None' %}
+          {{ float(value_json.drives.mdstat.devices.md127.resync.progress[:-1]|round(0),default=0) }}
+        {% else %}
+          {{ min(((states('input_number.schlerver_raid_resync_progress')|round(0)|int)+2),100) }}
+        {% endif %}
+
+    - name: Schlerver RAID Resync Time
+      value_template: >
+        {% if states('sensor.schlerver_raid_resync') != 'None' %}
+          {{ value_json.drives.mdstat.devices.md127.resync.finish.split('min')[0] }}
+        {% else %}
+          {{ states('input_text.schlerver_raid_resync_time') }}
+        {% endif %}
+
+  #>
+  #  {%  if not is_state('sensor.schlerver_raid_resync', 'None' ) %}
+  #    {% set raw=value_json.drives.mdstat.devices.md127.resync.finish.split('.')[0] %}
+  #    {% set hrs=(raw/60)|int %}
+  #    {% set min=raw-(hrs*60) %}
+  #    {% if hrs==0 and min < 10 %}
+  #      0min
+  #    {% elif hrs==0 %}
+  #      {{min }}min
+  #    {% elif hrs==1 %}
+  #      {{ hrs}}hrs {{min }}min
+  #    {% else %}
+  #      {{ hrs}}hrs {{min }}min
+  #    {% endif %}
+  #  {% else %}
+  #    {{ states('input_text.schlerver_raid_resync_time') }}
+  #  {% endif %}
+
+
+#####################
+# Boot and Time Stamps 
+#   Add a template_sensor with #device_class: timestamp
+#   Call these "time" to keep them separate
+#####################
+    - name: Schlerver Boot Time
+      value_template: "{{ value_json.boot_time }}"
+
+    - name: Schlerver Sync Time
+      value_template: "{{ (as_timestamp(value_json.timestamp)|int) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
