@@ -1,0 +1,105 @@
+alias: Schlerver RAID Status
+description: >-
+  Send alerts if the RAID on Schlerver is bad, or the status isn't being
+  refreshed
+triggers:
+  - minutes: /30
+    trigger: time_pattern
+  - alias: Schlerver Timestamp Changes
+    entity_id:
+      - sensor.schlerver_sync_time
+    for:
+      hours: 0
+      minutes: 0
+      seconds: 0
+    from: null
+    to: null
+    trigger: state
+  - entity_id:
+      - sensor.schlerver_sync_time
+    for:
+      hours: 0
+      minutes: 32
+      seconds: 0
+    alias: Schlerver Timestamp Doesn't Change for 32min
+    trigger: state
+  - entity_id:
+      - sensor.schlerver_raid_resync
+    alias: RAID Resync Status Changes
+    trigger: state
+  - entity_id:
+      - sensor.schlerver_drive_health
+    alias: When Drive Health Changes
+    trigger: state
+conditions:
+  - condition: template
+    value_template: "{{ trigger.from_state != null }}"
+actions:
+  - choose:
+      - conditions:
+          - condition: and
+            conditions:
+              - condition: template
+                value_template: >-
+                  {{ (int(as_timestamp(now()))) -
+                  (int(as_timestamp(states('sensor.schlerver_sync_time')),default=0))
+                  < 960 }}
+                alias: Schlerver Timestamp is < 16min Ago
+                enabled: false
+              - condition: template
+                value_template: >-
+                  {{ int(states('sensor.schlerver_raid_disk_count'),default=0)
+                  == 4}}
+                alias: Schlerver RAID Disk Count == 4
+              - condition: template
+                value_template: >-
+                  {{
+                  int(states('sensor.schlerver_raid_non_degraded_disks'),default=0)
+                  == 4}}
+                alias: Schlerver RAID Non-Degraded Disks == 4
+              - condition: state
+                entity_id: sensor.schlerver_raid_active
+                state: "True"
+                alias: Schlerver RAID Active is True
+              - condition: state
+                entity_id: sensor.schlerver_drive_status
+                state: Healthy
+            alias: Schlerver RAID is Healthy
+        sequence:
+          - choose:
+              - conditions:
+                  - alias: Schlerver RAID Resync is None
+                    condition: state
+                    entity_id: sensor.schlerver_raid_resync
+                    state: None
+                sequence:
+                  - data:
+                      option: Healthy
+                    target:
+                      entity_id: input_select.schlerver_raid_status
+                    alias: Schlerver RAID Status is Healthy
+                    action: input_select.select_option
+              - conditions:
+                  - alias: Schlerver RAID Resync is NOT None (Rebuilding)
+                    condition: not
+                    conditions:
+                      - alias: Schlerver RAID Resync is None
+                        condition: state
+                        entity_id: sensor.schlerver_raid_resync
+                        state: None
+                sequence:
+                  - data:
+                      option: Rebuilding
+                    target:
+                      entity_id: input_select.schlerver_raid_status
+                    alias: Schlerver RAID Status is Rebuilding
+                    action: input_select.select_option
+    default:
+      - data:
+          option: Unhealthy
+        target:
+          entity_id: input_select.schlerver_raid_status
+        alias: Schlerver RAID Status is Unhealthy
+        action: input_select.select_option
+mode: queued
+max: 10
