@@ -6,7 +6,7 @@ This is how I monitor my server and remote desktops.  It won't work for you; don
       # m h  dom mon dow   command
        */15 *  *   *   *   sudo python3 /home/kschlichter/.hass_monitor/hass_monitor.py
        @reboot             sudo python3 /home/kschlichter/.hass_monitor/hass_monitor.py
-     ```
+      ```
 * The output file will be located in the directiory defined in the `file_paths` dictionary, near the top of the script, which I'll translate to a runtime parameter at some point.  If you aren't sure how to do this, you should give up now.
   * ```
     file_paths = {
