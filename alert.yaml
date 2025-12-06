@@ -1,0 +1,134 @@
+#####################
+# Server and Desktop
+#####################
+schlerver_capacity_issue:
+  name: "Alert: Schlerver Capacity Issue!"
+  entity_id: sensor.schlerver_capacity_status
+  state: 'Unhealthy'
+  repeat: '2880' #2 days
+  skip_first: false
+  can_acknowledge: true
+  title: "Schlerver is Running Out of Space"
+  message: >-
+    "efi: " {{ states('sensor.schlerver_efi_used_pct') }}" % and " {{ states('sensor.schlerver_efi_used') }} "GB used of  "{{ states('sensor.schlerver_efi_total') }} "GB Total."
+    "root: " {{ states('sensor.schlerver_root_used_pct') }}" % and " {{ states('sensor.schlerver_root_used') }} "GB used of " {{ states('sensor.schlerver_root_total') }} "GB Total."
+    "storage:"  {{ states('sensor.schlerver_storage_used_pct') }}" % and " {{ states('sensor.schlerver_storage_used') }} "GB used of " {{ states('sensor.schlerver_storage_total') }} "GB Total."
+    "swap: " {{ states('sensor.schlerver_swap_used_pct') }}" % used of " {{ states('sensor.schlerver_swap_total') }} "GB Total."
+  done_message: >-
+    "Schlerver capasity is okay"
+    "efi: " {{ states('sensor.schlerver_efi_used_pct') }} "% and " {{ states('sensor.schlerver_efi_used') }} "GB used of " {{ states('sensor.schlerver_efi_total') }} "GB Total."
+    "root: " {{ states('sensor.schlerver_root_used_pct') }} "% and " {{ states('sensor.schlerver_root_used') }} "GB used of " {{ states('sensor.schlerver_root_total') }} "GB Total."
+    "backup: " {{ states('sensor.schlerver_backup_used_pct') }} "% and " {{ states('sensor.schlerver_backup_used') }} "GB used of " {{ states('sensor.schlerver_backup_total') }} "GB Total."
+    "swap: " {{ states('sensor.schlerver_swap_used_pct') }} "% used of " {{ states('sensor.schlerver_swap_total') }} "GB Total."
+  notifiers: mobile_app_kevin_phone
+
+schlerver_battery_issue:
+  name: "Alert: Schlerver Battery Issue!"
+  entity_id: sensor.schlerver_battery_status
+  state: 'Unhealthy'
+  repeat: '60'
+  skip_first: false
+  can_acknowledge: true
+  title: "Schlerver Battery Issue"
+  message: >-
+    "Charge: " {{ (states('sensor.apc_be650g1_battery_charge')|int) }}
+    "Voltage: " {{ (states('sensor.apc_be650g1_input_voltage')|int) }}
+  done_message: >-
+    "Schlerver battery is healthy!"
+  notifiers: mobile_app_kevin_phone
+
+schlerver_drive_issue:
+  name: "Alert: Schlerver Drive Issue!"
+  entity_id: sensor.schlerver_drive_status
+  state: 'Unhealthy'
+  repeat: '120' 
+  skip_first: true #Otherwise it goes off at every reboot.
+  can_acknowledge: true
+  title: "Schlerver Drive Issue"
+  message: >-
+    "nvme0:"
+    "  " {{ states('sensor.schlerver_smart_nvme0_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_nvme0_temperature') }}
+    "sda:"
+    "  " {{ states('sensor.schlerver_smart_sda_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sda_temperature') }}
+    "sdb:"
+    "  " {{ states('sensor.schlerver_smart_sdb_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdb_temperature') }}
+    "sdc:"
+    "  " {{ states('sensor.schlerver_smart_sdc_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdc_temperature') }}
+    "sdd:"
+    "  " {{ states('sensor.schlerver_smart_sdd_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdd_temperature') }}
+  done_message: >-
+    "Schlerver drives are healthy!"
+    "nvme0:"
+    "  " {{ states('sensor.schlerver_smart_nvme0_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_nvme0_temperature') }}
+    "sda:"
+    "  " {{ states('sensor.schlerver_smart_sda_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sda_temperature') }}
+    "sdb:"
+    "  " {{ states('sensor.schlerver_smart_sdb_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdb_temperature') }}
+    "sdc:"
+    "  " {{ states('sensor.schlerver_smart_sdc_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdc_temperature') }}
+    "sdd:"
+    "  " {{ states('sensor.schlerver_smart_sdd_assessment') }}
+    "  " {{ states('sensor.schlerver_smart_sdd_temperature') }}
+  notifiers: mobile_app_kevin_phone
+
+schlerver_sync_issue:
+  name: "Alert: Schlerver Sync Issue!"
+  entity_id: sensor.schlerver_sync_status
+  state: 'Unhealthy'
+  repeat: '120' 
+  skip_first: true #Otherwise it goes off at every reboot.
+  can_acknowledge: true
+  title: "Schlerver Not Sync'd!"
+  message: >-
+    "Schlerver Last Seen: " {{ states('sensor.schlerver_sync_timestamp') }}
+  done_message: >-
+    "Schlerver is sync'ing again."
+  notifiers: mobile_app_kevin_phone
+
+schlerver_raid_issue:
+  name: "Alert: Schlerver RAID done gots issues!"
+  entity_id: input_select.schlerver_raid_status
+  state: 'Unhealthy'
+  repeat: '120'
+  skip_first: false
+  can_acknowledge: true
+  title: "Schlerver RAID Issue"
+  message: >
+    RAID last updated: {{ states('sensor.schlerver_sync_time') }} 
+    RAID active: {{ states('sensor.schlerver_raid_active') }} 
+    Total Disks: {{ states('sensor.schlerver_raid_disk_count') }} 
+    Functional disks: {{ states('sensor.schlerver_raid_non_degraded_disks') }} 
+    Drive Status: {{ states('sensor.schlerver_drive_status') }}
+  done_message: >-
+    "Schlerver RAID is healthy again:"
+    RAID last updated: {{ states('sensor.schlerver_sync_time') }}
+    RAID active: {{ states('sensor.schlerver_raid_active') }} 
+    Total Disks: {{ states('sensor.schlerver_raid_disk_count') }} 
+    Functional disks: {{ states('sensor.schlerver_raid_non_degraded_disks') }} 
+    Drive Status: {{ states('sensor.schlerver_drive_status') }}
+  notifiers: mobile_app_kevin_phone
+
+schlerver_uptime_issue:
+  name: "Alert: Schlerver Uptime Issue!"
+  entity_id: input_boolean.schlerver_uptime
+  state: 'on'
+  repeat: '120'
+  skip_first: false
+  can_acknowledge: true
+  title: "Schlerver Rebooted"
+  message: >-
+    "Previous boot: "{{ states('input_datetime.schlerver_boot_time') }}
+    "Current Boot: "{{ states('sensor.schlerver_boot_time') }}
+  done_message: >-
+    "Schlerver uptime reset."
+    "Current Boot: "{{ states('sensor.schlerver_boot_time') }}
+  notifiers: mobile_app_kevin_phone
