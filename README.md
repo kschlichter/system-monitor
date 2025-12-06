@@ -26,7 +26,7 @@ This is how I monitor my server and remote desktops.  It won't work for you; don
            - "/mnt/storage/nextcloud/data/kschlichter/files/Home\ Assistant:/config/www/hass_monitor"  ### nextcloud directory with subdirectories for all of my systems
        ```
   * If you're not using docker compose, you're running Hass OS, or doing something else, you can figure it out.  Your mom believes in you, I'm sure.
-* If the script is monitoring a different system, I use [nextcloud](https://nextcloud.com/) to get it sync'd back to the server into a `Home Assistant` that has a directory for each system I monitor.
+* If the script is monitoring a different system, I use [nextcloud](https://nextcloud.com/) to get it sync'd back to the server into a `Home Assistant` directory that has a subdirectory for each system I monitor.
   * Incidentally, when I need to make a change, I can do that in nextcloud and let it sync out to each system, instead of logging into them individually.
 * I use the [RESTful Sensors](https://www.home-assistant.io/integrations/sensor.rest/) integration to generate sensors from the `.json` files.
   * I have [split up my](https://www.home-assistant.io/docs/configuration/splitting_configuration/) `configuration.yaml`.  If you didn't, I'll pray for you.
