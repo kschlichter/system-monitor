@@ -39,7 +39,8 @@ This is how I monitor my server and remote desktops.  It won't work for you; don
 * My `lovelace_summary_card` is a series of [glance cards](https://www.home-assistant.io/dashboards/glance/) in a [vertical stack card](https://www.home-assistant.io/dashboards/vertical-stack/).  That gives me something like:
   * <img width="580" height="965" alt="image" src="https://github.com/user-attachments/assets/7c93e864-281b-4988-9294-ac8142d006a1" />
   * Clicking on the summary icon links to a dashboard for that system.  I've included the `lovelace_dashboard` yaml in the repository, which gives me something like:
-    * <img width="607" height="1045" alt="image" src="https://github.com/user-attachments/assets/617b9023-468c-4ff7-9079-d37ce8934313" />
+    * <img width="1207" height="1539" alt="image" src="https://github.com/user-attachments/assets/0d8a5ef6-769c-45eb-ba35-f26b3301a595" />
+
     * It's a lot; I know.
 * My system-specific dashboards use YAML similar to `schlerver_dashboard` with some things removed (i.e. they don't have a GPU or RAID).
 * Finally, I have a series of sensors that I use to set [input booleans](https://www.home-assistant.io/integrations/input_boolean/), and leverage in some automations (i.e. analysing drive info and deciding whether the RAID is healthy in order to trigger the alert).  I've included some of that in this repository but there are pieces you'll have to figure out on your own.  Partly, that's because I'm too lazy to track them down, and partly it's because it's just not that hard.
