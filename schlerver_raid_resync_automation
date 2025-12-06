@@ -1,0 +1,55 @@
+alias: Schlerver RAID Resync Progress
+description: Tracking RAID resync
+triggers:
+  - entity_id:
+      - sensor.schlerver_raid_resync
+    id: Resync Progress Changed
+    enabled: true
+    trigger: state
+conditions: []
+actions:
+  - choose:
+      - conditions:
+          - condition: not
+            conditions:
+              - condition: state
+                entity_id: sensor.schlerver_raid_resync
+                state: None
+            alias: RAID Resync is NOT None (Rebuilding)
+          - alias: RAID Resync is NOT unknown
+            condition: not
+            conditions:
+              - condition: state
+                entity_id: sensor.schlerver_raid_resync
+                state: unknown
+          - alias: RAID Resync is NOT unavailable
+            condition: not
+            conditions:
+              - condition: state
+                entity_id: sensor.schlerver_raid_resync
+                state: unavailable
+        sequence:
+          - data_template:
+              value: "{{ states('sensor.schlerver_raid_resync_progress') }}"
+            target:
+              entity_id: input_number.schlerver_raid_resync_progress
+            action: input_number.set_value
+          - data:
+              value: "{{ states('sensor.schlerver_raid_resync_time') }}"
+            target:
+              entity_id: input_text.schlerver_raid_resync_time
+            action: input_text.set_value
+    default:
+      - if:
+          - condition: state
+            entity_id: sensor.schlerver_raid_resync_progress
+            state: "100"
+        then:
+          - data:
+              value: Done
+            target:
+              entity_id: input_text.schlerver_raid_resync_time
+            action: input_text.set_value
+        alias: If RAID Resync Progress is 100, Set Time to Done
+mode: queued
+max: 10
