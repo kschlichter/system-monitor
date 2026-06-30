@@ -9,76 +9,118 @@
 # CPU Stuffs
 #####################
     - name: Schlerver CPU Temp
+      unique_id: 2026-06-30 06:56:00.174072-07:00
       value_template: "{{ float(value_json.cpus.temp,default=0) }}"
       #device_class: temperature ### Converts to F!
-      unit_of_measurement: °C
+      state_class: measurement
+      unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver CPU Temp High
+      unique_id: 2026-06-30 06:56:12.368875-07:00 
       value_template: "{{ float(value_json.cpus.high,default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver CPU Temp Critical
+      unique_id: 2026-06-30 06:56:23.359518-07:00  
       value_template: "{{ float(value_json.cpus.critical,default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver CPU Load Avg 15min
+      unique_id: 2026-06-30 06:56:31.189123-07:00   
       value_template: "{{ float(value_json.cpus.load_average_15min,default=0) | round(2) }}"
+      state_class: measurement
+      unit_of_measurement: "%"
 
 
 #####################
 # Memory
 #####################
     - name: Schlerver Memory total
+      unique_id: 2026-06-30 06:56:42.192623-07:00    
       value_template: "{{ float(value_json.memory.total,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "GB"
 
     - name: Schlerver Memory PCT Used
-      value_template: "{{ float(value_json.memory.pct_used,default=0) }}"
+      unique_id: 2026-06-30 05:42:00.226313-07:00
+      value_template: "{{ value_json.memory.pct_used | float(0) }}"
+      state_class: measurement
+      unit_of_measurement: "%"
 
 
 #####################
 # Swap
 #####################
     - name: Schlerver Swap total
+      unique_id: 2026-06-30 06:57:00.305015-07:00
       value_template: "{{ float(value_json.swap.total,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "GB"
 
     - name: Schlerver Swap Used
+      unique_id: 2026-06-30 06:57:07.588526-07:00
       value_template: "{{ float(value_json.swap.used,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "GB"
 
     - name: Schlerver Swap PCT Used
+      unique_id: 2026-06-30 06:57:20.659191-07:00
       value_template: "{{ float(value_json.swap.pct_used,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "%"
 
 
 #####################
 # GPUs
 #####################
     - name: Schlerver GPU 0 UUID
+      unique_id: 2026-06-30 06:57:27.120481-07:00
       value_template: "{{ value_json['gpus']['0']['uuid'] }}"
       icon: si:nvidia
 
     - name: Schlerver GPU 0 Name
+      unique_id: 2026-06-30 06:57:33.083977-07:00
       value_template: "{{ value_json['gpus']['0']['name'] }}"
       icon: si:nvidia
 
     - name: Schlerver GPU 0 Utilization
+      unique_id: 2026-06-30 06:57:39.183651-07:00
       value_template: "{{ int(value_json['gpus']['0']['utilization'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "%"
       icon: si:nvidia
 
     - name: Schlerver GPU 0 Memory total
+      unique_id: 2026-06-30 06:57:45.347177-07:00
       value_template: "{{ float(value_json['gpus']['0']['memory_total'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "GB"
       icon: si:nvidia
 
-    - name: Schlerver GPU 0 PCT Used
-      value_template: "{{ float(value_json['gpus']['0']['pct_used'],default=0) }}"
+    - name: Schlerver GPU 0 Memory used
+      unique_id: 2026-06-30 06:57:51.951572-07:00
+      value_template: "{{ float(value_json['gpus']['0']['memory_used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: "GB"
       icon: si:nvidia
+
+    ### only reports 0%
+    #- name: Schlerver GPU 0 PCT Used
+    #  value_template: "{{ float(value_json['gpus']['0']['pct_used'],default=0) }}"
+    #  icon: si:nvidia
 
     - name: Schlerver GPU 0 Temperature
+      unique_id: 2026-06-30 06:57:58.531986-07:00
       value_template: "{{ float(value_json['gpus']['0']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
@@ -87,10 +129,12 @@
 # NICs
 #####################
     - name: Schlerver NIC enp5s0
+      unique_id: 2026-06-30 07:00:49.257009-07:00
       value_template: "{{ value_json.nics.enp5s0 }}"
       icon: mdi:lan
 
     - name: Schlerver NIC external
+      unique_id: 2026-06-30 07:00:57.545190-07:00
       value_template: "{{ value_json.nics.external }}"
       icon: mdi:lan
 
@@ -103,160 +147,200 @@
 #####################
 ### sda ###
     - name: Schlerver SMART sda Model
+      unique_id: 2026-06-30 07:01:03.863771-07:00
       value_template: "{{ value_json['drives']['/dev/sda']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sda Serial
+      unique_id: 2026-06-30 07:01:16.033344-07:00
       value_template: "{{ value_json['drives']['/dev/sda']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sda Assignment
+      unique_id: 2026-06-30 07:01:21.902557-07:00
       value_template: "{{ value_json['drives']['/dev/sda']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sda Assessment
+      unique_id: 2026-06-30 07:01:27.494290-07:00
       value_template: "{{ value_json['drives']['/dev/sda']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sda Temperature
+      unique_id: 2026-06-30 07:01:33.284433-07:00
       value_template: "{{ float(value_json['drives']['/dev/sda']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
 
 ### sdb ###
     - name: Schlerver SMART sdb Model
+      unique_id: 2026-06-30 07:33:18.796803-07:00
       value_template: "{{ value_json['drives']['/dev/sdb']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdb Serial
+      unique_id: 2026-06-30 07:33:30.563100-07:00
       value_template: "{{ value_json['drives']['/dev/sdb']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdb Assignment
+      unique_id: 2026-06-30 07:33:42.119832-07:00
       value_template: "{{ value_json['drives']['/dev/sdb']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdb Assessment
+      unique_id: 2026-06-30 07:33:47.755284-07:00
       value_template: "{{ value_json['drives']['/dev/sdb']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdb Temperature
+      unique_id: 2026-06-30 07:33:56.175642-07:00
       value_template: "{{ float(value_json['drives']['/dev/sdb']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver RAID sdb Fault
+      unique_id: 2026-06-30 07:34:01.952596-07:00
       value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdb1']['faulty'] }}"
       icon: mdi:harddisk
 
 
 ### sdc ###
     - name: Schlerver SMART sdc Model
+      unique_id: 2026-06-30 07:34:07.852920-07:00
       value_template: "{{ value_json['drives']['/dev/sdc']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdc Serial
+      unique_id: 2026-06-30 07:34:14.335504-07:00
       value_template: "{{ value_json['drives']['/dev/sdc']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdc Assignment
+      unique_id: 2026-06-30 07:34:20.011546-07:00
       value_template: "{{ value_json['drives']['/dev/sdc']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdc Assessment
+      unique_id: 2026-06-30 07:35:10.090729-07:00
       value_template: "{{ value_json['drives']['/dev/sdc']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdc Temperature
+      unique_id: 2026-06-30 07:35:27.724574-07:00
       value_template: "{{ float(value_json['drives']['/dev/sdc']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver RAID sdc Fault
+      unique_id: 2026-06-30 07:35:38.152024-07:00
       value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdc1']['faulty'] }}"
       icon: mdi:harddisk
 
 
 ### sdd ###
     - name: Schlerver SMART sdd Model
+      unique_id: 2026-06-30 07:35:45.262354-07:00
       value_template: "{{ value_json['drives']['/dev/sdd']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdd Serial
+      unique_id: 2026-06-30 07:35:50.536006-07:00
       value_template: "{{ value_json['drives']['/dev/sdd']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdd Assignment
+      unique_id: 2026-06-30 07:35:58.298124-07:00
       value_template: "{{ value_json['drives']['/dev/sdd']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdd Assessment
+      unique_id: 2026-06-30 07:36:05.198021-07:00
       value_template: "{{ value_json['drives']['/dev/sdd']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sdd Temperature
+      unique_id: 2026-06-30 07:36:10.667913-07:00
       value_template: "{{ float(value_json['drives']['/dev/sdd']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver RAID sdd Fault
+      unique_id: 2026-06-30 07:36:15.979145-07:00
       value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sdd1']['faulty'] }}"
       icon: mdi:harddisk
 
 
 ### sde ###
     - name: Schlerver SMART sde Model
+      unique_id: 2026-06-30 07:36:22.638922-07:00
       value_template: "{{ value_json['drives']['/dev/sde']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sde Serial
+      unique_id: 2026-06-30 07:36:27.898557-07:00
       value_template: "{{ value_json['drives']['/dev/sde']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sde Assignment
+      unique_id: 2026-06-30 07:36:33.291172-07:00
       value_template: "{{ value_json['drives']['/dev/sde']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sde Assessment
+      unique_id: 2026-06-30 07:36:38.682228-07:00
       value_template: "{{ value_json['drives']['/dev/sde']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART sde Temperature
+      unique_id: 2026-06-30 07:36:46.165421-07:00
       value_template: "{{ float(value_json['drives']['/dev/sde']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
     - name: Schlerver RAID sde Fault
+      unique_id: 2026-06-30 07:36:52.732538-07:00
       value_template: "{{ value_json['drives']['mdstat']['devices']['md127']['disks']['sde1']['faulty'] }}"
       icon: mdi:harddisk
 
 
 ### nvme0 ###
     - name: Schlerver SMART nvme0 Model
+      unique_id: 2026-06-30 07:37:01.604628-07:00
       value_template: "{{ value_json['drives']['/dev/nvme0']['model'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART nvme0 Serial
+      unique_id: 2026-06-30 07:37:08.164556-07:00
       value_template: "{{ value_json['drives']['/dev/nvme0']['serial_number'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART nvme0 Assignment
+      unique_id: 2026-06-30 07:37:13.551304-07:00
       value_template: "{{ value_json['drives']['/dev/nvme0']['assignment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART nvme0 Assessment
+      unique_id: 2026-06-30 07:37:18.558235-07:00
       value_template: "{{ value_json['drives']['/dev/nvme0']['assessment'] }}"
       icon: mdi:harddisk
 
     - name: Schlerver SMART nvme0 Temperature
+      unique_id: 2026-06-30 07:37:25.060404-07:00
       value_template: "{{ float(value_json['drives']['/dev/nvme0']['temperature'],default=0) }}"
       #device_class: temperature ### Converts to F!
+      state_class: measurement
       unit_of_measurement: '°C'
       icon: mdi:thermometer
 
@@ -265,51 +349,87 @@
 # Partitions
 #####################
     - name: Schlerver Root total
+      unique_id: 2026-06-30 07:37:37.452188-07:00
       value_template: "{{ float(value_json['drives']['/']['total'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver Root Used
+      unique_id: 2026-06-30 07:37:42.462225-07:00
       value_template: "{{ float(value_json['drives']['/']['used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver Root PCT Used
+      unique_id: 2026-06-30 07:37:47.559344-07:00
       value_template: "{{ float(value_json['drives']['/']['pct_used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '%'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver EFI total
+      unique_id: 2026-06-30 07:37:52.484114-07:00
       value_template: "{{ float(value_json['drives']['/boot/efi']['total'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver EFI Used
+      unique_id: 2026-06-30 07:37:57.169873-07:00
       value_template: "{{ float(value_json['drives']['/boot/efi']['used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver EFI PCT Used
+      unique_id: 2026-06-30 07:38:04.213983-07:00
       value_template: "{{ float(value_json['drives']['/boot/efi']['pct_used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '%'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver Storage total
+      unique_id: 2026-06-30 07:38:10.125259-07:00
       value_template: "{{ float(value_json['drives']['/mnt/storage']['total'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver Storage Used
+      unique_id: 2026-06-30 07:38:15.092284-07:00
       value_template: "{{ float(value_json['drives']['/mnt/storage']['used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver Storage PCT Used
+      unique_id: 2026-06-30 07:38:21.603931-07:00
       value_template: "{{ float(value_json['drives']['/mnt/storage']['pct_used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '%'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver NVR total
+      unique_id: 2026-06-30 07:38:27.830880-07:00
       value_template: "{{ float(value_json['drives']['/mnt/nvr']['total'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver NVR Used
+      unique_id: 2026-06-30 07:38:32.827055-07:00
       value_template: "{{ float(value_json['drives']['/mnt/nvr']['used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: 'GB'
       icon: mdi:folder-arrow-up-down
 
     - name: Schlerver NVR PCT Used
+      unique_id: 2026-06-30 07:38:37.883728-07:00
       value_template: "{{ float(value_json['drives']['/mnt/nvr']['pct_used'],default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '%'
       icon: mdi:folder-arrow-up-down
 
 
@@ -317,35 +437,50 @@
 # RAID
 #####################
     - name: Schlerver RAID Active
+      unique_id: 2026-06-30 07:38:48.149975-07:00
       value_template: "{{ value_json.drives.mdstat.devices.md127.active }}"
 
     - name: Schlerver RAID Personality
+      unique_id: 2026-06-30 07:38:52.916456-07:00
       value_template: "{{ value_json.drives.mdstat.devices.md127.personality }}"
 
     - name: Schlerver RAID Disk Count
+      unique_id: 2026-06-30 07:38:57.973500-07:00
       value_template: "{{ float(value_json.drives.mdstat.devices.md127.status.raid_disks,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '#'
 
     - name: Schlerver RAID Non-Degraded Disks
+      unique_id: 2026-06-30 07:39:02.760919-07:00
       value_template: "{{ float(value_json.drives.mdstat.devices.md127.status.non_degraded_disks,default=0) }}"
+      state_class: measurement
+      unit_of_measurement: '#'
 
     - name: Schlerver RAID Resync
+      unique_id: 2026-06-30 07:39:07.599494-07:00
       value_template: "{{ value_json.drives.mdstat.devices.md127.resync }}"
 
     - name: Schlerver RAID Resync Progress
+      unique_id: 2026-06-30 07:39:13.273114-07:00
       value_template: > 
         {% if states('sensor.schlerver_raid_resync') != 'None' %}
           {{ float(value_json.drives.mdstat.devices.md127.resync.progress[:-1]|round(0),default=0) }}
         {% else %}
           {{ min(((states('input_number.schlerver_raid_resync_progress')|round(0)|int)+2),100) }}
         {% endif %}
+      state_class: measurement
+      unit_of_measurement: '%'
 
     - name: Schlerver RAID Resync Time
+      unique_id: 2026-06-30 07:39:28.117512-07:00
       value_template: >
         {% if states('sensor.schlerver_raid_resync') != 'None' %}
           {{ value_json.drives.mdstat.devices.md127.resync.finish.split('min')[0] }}
         {% else %}
           {{ states('input_text.schlerver_raid_resync_time') }}
         {% endif %}
+      device_class: duration
+      unit_of_measurement: 'min'
 
   #>
   #  {%  if not is_state('sensor.schlerver_raid_resync', 'None' ) %}
@@ -372,7 +507,11 @@
 #   Call these "time" to keep them separate
 #####################
     - name: Schlerver Boot Time
+      unique_id: 2026-06-30 07:39:39.807891-07:00
       value_template: "{{ value_json.boot_time }}"
+      #device_class: timestamp
 
     - name: Schlerver Sync Time
+      unique_id: 2026-06-30 07:39:45.384942-07:00
       value_template: "{{ (as_timestamp(value_json.timestamp)|int) | timestamp_custom('%Y-%m-%d %H:%M:%S') }}"
+      #device_class: timestamp
